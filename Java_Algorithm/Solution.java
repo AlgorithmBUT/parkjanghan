@@ -1,38 +1,54 @@
 class Solution {
-    public int[] solution(String s) {
-        int[] answer = {};
-        int count_zero = 0;
-        int round_count = 0;
-        String ans_str = s;
+    public int[] solution(String args[]) {
+
+//         StringBuilder sb = new StringBuilder(s);
+//         // System.out.println(sb);
+//         boolean solable;
+//         char next_ch;
+//         char ch;
         
-        while (true){
-            
-            char[] char_array = ans_str.toCharArray();
-            ans_str = "";
-            for (char ch : char_array) {
-                if (ch == '1') ans_str += "1";
-                else count_zero++;
-            }        
-            // System.out.println(ans_str);
+//         while(sb.length() != 0){
+//             solable = false;
+//             ch = sb.charAt(0);
+//             for (int i = 0; i < sb.length() -1; i++){
+//                 next_ch = sb.charAt(i+1);
+//                 if (ch == next_ch){
+//                     sb.delete(i,i+2);
+//                     solable = true;
+//                     break;
+//                 }
+//                 ch = next_ch;
+//             }
+//             if (!solable) return 0;
+//         }
         
-            int str_leng = ans_str.length();
+//         return 1;
         
-            ans_str = "";
-            while (str_leng > 0){
-                if (str_leng % 2 == 1) {
-                    ans_str = "1" + ans_str;
-                } else {
-                    ans_str = "0" + ans_str;
-                }
-                str_leng /= 2;
+        Deque<Character> stk = new ArrayDeque<>();
+        StringBuilder sb = new StringBuilder(s);
+        
+        for (int i = 0; i < sb.length(); i++){
+            char ch = sb.charAt(i);
+            if (stk.isEmpty()) {
+                stk.push(ch);
+            } else if (!stk.isEmpty() && stk.peek() == ch) {
+                stk.pop();
+            } else {
+                stk.push(ch);
             }
-            System.out.println(ans_str);
-            round_count++;
-            if (ans_str.equals("1")) break;
         }
-        answer = new int[2];
-        answer[0] = round_count;
-        answer[1] = count_zero;
-        return answer;
+        
+        while(!stk.isEmpty()){
+            char ch = stk.pop();
+            if (!stk.isEmpty() && stk.peek() == ch){
+                stk.pop();
+            } else {
+                return 0;
+            }
+        }
+        
+        // System.out.println(sb);
+        
+        return 1;
     }
 }
