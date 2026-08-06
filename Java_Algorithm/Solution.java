@@ -1,54 +1,20 @@
 class Solution {
-    public int[] solution(String args[]) {
-
-//         StringBuilder sb = new StringBuilder(s);
-//         // System.out.println(sb);
-//         boolean solable;
-//         char next_ch;
-//         char ch;
+    public int[] solution(int brown, int yellow) {
+        int[] answer = new int[2];
+        int big_size = brown + yellow;
+        int small_size = yellow;
         
-//         while(sb.length() != 0){
-//             solable = false;
-//             ch = sb.charAt(0);
-//             for (int i = 0; i < sb.length() -1; i++){
-//                 next_ch = sb.charAt(i+1);
-//                 if (ch == next_ch){
-//                     sb.delete(i,i+2);
-//                     solable = true;
-//                     break;
-//                 }
-//                 ch = next_ch;
-//             }
-//             if (!solable) return 0;
-//         }
-        
-//         return 1;
-        
-        Deque<Character> stk = new ArrayDeque<>();
-        StringBuilder sb = new StringBuilder(s);
-        
-        for (int i = 0; i < sb.length(); i++){
-            char ch = sb.charAt(i);
-            if (stk.isEmpty()) {
-                stk.push(ch);
-            } else if (!stk.isEmpty() && stk.peek() == ch) {
-                stk.pop();
-            } else {
-                stk.push(ch);
-            }
+        for (int i = 1; i <= small_size; i++){
+            if ((small_size % i) != 0) continue;
+            
+            int j = small_size / i;
+            
+            if (big_size == (i+2)*(j+2)) {
+                answer[0] = i > j? i+2 : j+2;
+                answer[1] = i > j? j+2 : i+2; 
+            } 
         }
         
-        while(!stk.isEmpty()){
-            char ch = stk.pop();
-            if (!stk.isEmpty() && stk.peek() == ch){
-                stk.pop();
-            } else {
-                return 0;
-            }
-        }
-        
-        // System.out.println(sb);
-        
-        return 1;
+        return answer;
     }
 }
