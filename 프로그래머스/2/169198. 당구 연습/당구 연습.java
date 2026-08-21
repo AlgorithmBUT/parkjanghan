@@ -8,10 +8,10 @@ class Solution {
     
     public int calc_square(int m, int n, int startX, int startY, int ballX, int ballY)  {
 
-        int min_dist1 = manDistSquare(startX, startY, ballX*(-1), ballY);
+        int min_dist1 = manDistSquare(startX, startY, -ballX, ballY);
         if (startY == ballY && startX > ballX) min_dist1 = Integer.MAX_VALUE;
             
-        int min_dist2 = manDistSquare(startX, startY, ballX, ballY*(-1));
+        int min_dist2 = manDistSquare(startX, startY, ballX, -ballY);
         if (startX == ballX && startY > ballY) min_dist2 = Integer.MAX_VALUE;
         
         int min_dist3 = manDistSquare(startX, startY, ballX, (2*n - ballY));
