@@ -12,7 +12,7 @@ class Solution {
         
         // for (1 -> n 번 컴퓨터 까지)
         for (int i = 0; i < n; i++){
-            // visited[i] == 0 이면 stack에 넣기
+            // visited[i] == 0 이면 stack에 넣기 
             if (!visited[i]) {
                 stk.push(i);
                 visited[i] = true;
