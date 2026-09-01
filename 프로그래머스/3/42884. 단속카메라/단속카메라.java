@@ -2,21 +2,23 @@ import java.util.*;
 
 class Solution {
     public int solution(int[][] routes) {
-        Arrays.sort(routes, (a, b) -> Integer.compare(a[1], b[1]));
 
-        int answer = 0;
-        int camera = Integer.MIN_VALUE;
+        int cur = -30000;      // 카메라 위치
+        int camera = 0;   // 카메라 개수
 
-        for (int[] route : routes) {
-            int start = route[0];
-            int end = route[1];
+        Arrays.sort(routes, (a,b) ->{
+          return Integer.compare(a[1], b[1]);
+        });
 
-            if (camera < start) {
-                camera = end;
-                answer++;
-            }
+        for (int i=0; i<routes.length; i++){
+          if (routes[i][0]<=cur){
+            continue;
+          } else {
+            cur=routes[i][1];
+            camera++;
+          }
         }
 
-        return answer;
+        return camera;
     }
 }
