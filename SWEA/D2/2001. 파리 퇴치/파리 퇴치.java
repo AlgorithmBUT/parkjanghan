@@ -1,51 +1,48 @@
-import java.util.Scanner;
-import java.io.FileInputStream;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
 
-class Solution {
-    static int N;
-    static int M;
+class Solution{
 
-    public static void main(String args[]) throws Exception {
+    public static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        Scanner sc = new Scanner(System.in);
-        int T;
-        T = sc.nextInt();
+    public static void main(String[] args) throws Exception {
+        int T = Integer.parseInt(br.readLine());
 
-        for (int test_case = 1; test_case <= T; test_case++) {
-            N = sc.nextInt();
-            M = sc.nextInt();
+        for(int tc = 1; tc <= T; tc++){
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            int N = Integer.parseInt(st.nextToken());
+            int M = Integer.parseInt(st.nextToken());
 
             int[][] grid = new int[N][N];
-
-            for (int i = 0; i < N; i++) {
-                for (int j = 0; j < N; j++) {
-                    grid[i][j] = sc.nextInt();
+            int[][] sum = new int[N+1][N+1];
+            for (int i = 0; i < N; i++){
+                st = new StringTokenizer(br.readLine());
+                for (int j = 0; j < N; j++){
+                    if (st.hasMoreTokens()) grid[i][j] = Integer.parseInt(st.nextToken());
                 }
             }
 
-            int maxSum = 0;
-
-            for (int i = 0; i <= N - M; i++) {
-                for (int j = 0; j <= N - M; j++) {
-                    int sum = add_sum(grid, i, j);
-                    maxSum = Math.max(maxSum, sum);
+            for (int i = 1; i <= N; i++){
+                for (int j = 1; j <= N; j++){
+                    sum[i][j] = grid[i-1][j-1] + sum[i-1][j] + sum[i][j-1] - sum[i-1][j-1];
                 }
             }
 
-            System.out.println("#" + test_case + " " + maxSum);
-        }
-    }
-
-    public static int add_sum(int[][] grid, int startY, int startX) {
-
-        int sum = 0;
-
-        for (int i = startY; i < startY + M; i++) {
-            for (int j = startX; j < startX + M; j++) {
-                sum += grid[i][j];
+            int MAX = 0;
+            for (int i = M; i <= N; i++){
+                for (int j = M; j <= N; j++){
+                    int square = sum[i][j] - sum[i-M][j] - sum[i][j-M] + sum[i-M][j-M];
+                    MAX = Math.max(MAX, square);
+                }
             }
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("#").append(tc).append(" ").append(MAX);
+
+            System.out.println(sb);
         }
 
-        return sum;
     }
 }
