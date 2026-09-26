@@ -1,79 +1,54 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.Arrays;
+import java.io.StreamTokenizer;
+import java.util.*;
 
-class Solution {
+class Solution{
 
-    static int[] memo = new int[100000];
+    static int TC;
+    static int N;
+    static int ANSWER;
+    static int[] memo;
 
     public static void main(String[] args) throws Exception {
-
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        TC = Integer.parseInt(br.readLine());
 
-        Arrays.fill(memo, -1);
+        for (int tc = 1; tc <= TC; tc++){
+            N = Integer.parseInt(br.readLine());
 
-        int T = Integer.parseInt(br.readLine());
+            //========================================
+            memo = new int[100000];
+            Arrays.fill(memo, -1);
 
-        for (int tc = 1; tc <= T; tc++) {
+            ANSWER = dfs(N);
 
-            int number = Integer.parseInt(br.readLine());
-
-            int answer = dfs(number);
-
-            System.out.println("#" + tc + " " + answer);
+            System.out.println("#" + tc + " " + ANSWER);
         }
     }
 
-    static int dfs(int number) {
+    public static int dfs(int N){
+        if (memo[N] != -1) return memo[N];
+        String str = Integer.toString(N);
 
-        // 한 자리 수면 더 이상 자를 수 없음
-        if (number < 10) {
-            return 0;
-        }
-
-        // 이미 계산한 숫자
-        if (memo[number] != -1) {
-            return memo[number];
-        }
-
-        String str = Integer.toString(number);
-
-        int maxTurn = 0;
-        int len = str.length();
-
-        // 숫자 사이를 자르는 모든 경우
-        for (int mask = 1; mask < (1 << (len - 1)); mask++) {
+        int maxCnt = 0;
+        for (int mask = 1; mask < (1 << str.length() - 1); mask++){
 
             int product = 1;
             int start = 0;
 
-            // 각 숫자 사이 확인
-            for (int i = 0; i < len - 1; i++) {
-
-                // 현재 위치에서 자르는 경우
-                if ((mask & (1 << i)) != 0) {
-
-                    int num = Integer.parseInt(
-                            str.substring(start, i + 1)
-                    );
-
+            for (int i = 0; i < str.length() - 1; i++){
+                if ((mask & (1 << i)) != 0){
+                    int num = Integer.parseInt(str.substring(start, i+1));
                     product *= num;
-
-                    start = i + 1;
+                    start = i+1;
                 }
             }
-
-            int num = Integer.parseInt(str.substring(start));
-            product *= num;
-
-            maxTurn = Math.max(
-                    maxTurn,
-                    1 + dfs(product)
-            );
+            product *= Integer.parseInt(str.substring(start, str.length()));
+            maxCnt = Math.max(maxCnt, dfs(product) + 1);
         }
 
-        memo[number] = maxTurn;
-
-        return maxTurn;
+        memo[N] = maxCnt;
+        return maxCnt;
     }
 }
