@@ -8,7 +8,7 @@ class Solution{
     static int TC;
     static int N, B = 0;
     static int ANSWER;
-    static int[] heights;
+    static int[] heights, remainSum;
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -25,6 +25,11 @@ class Solution{
                 heights[i] = Integer.parseInt(st.nextToken());
             }
 
+            remainSum = new int[N+1];
+            for (int i = N-1; i >= 0; i--){
+                remainSum[i] = remainSum[i+1] + heights[i];
+            }
+
             //========================================
             ANSWER = Integer.MAX_VALUE;
             dfs(0, 0);
@@ -39,6 +44,9 @@ class Solution{
             if (total >= B) ANSWER = Math.min(ANSWER, total);
             return;
         }
+
+        if (remainSum[depth] + total < B) return;
+
 
         // depth번째 선택
         dfs(depth + 1, total + heights[depth]);
