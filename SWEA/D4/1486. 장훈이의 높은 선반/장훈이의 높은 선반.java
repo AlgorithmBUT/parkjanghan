@@ -1,60 +1,51 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.io.StreamTokenizer;
+import java.util.*;
 
-class Solution {
+class Solution{
 
-    static int N;
-    static int B;
-    static int[] height;
-    static int answer;
+    static int TC;
+    static int N, B = 0;
+    static int ANSWER;
+    static int[] heights;
 
     public static void main(String[] args) throws Exception {
-
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        TC = Integer.parseInt(br.readLine());
 
-        int T = Integer.parseInt(br.readLine());
-
-        for (int tc = 1; tc <= T; tc++) {
-
+        for (int tc = 1; tc <= TC; tc++){
             StringTokenizer st = new StringTokenizer(br.readLine());
-
             N = Integer.parseInt(st.nextToken());
             B = Integer.parseInt(st.nextToken());
 
-            height = new int[N];
-
+            heights = new int[N];
             st = new StringTokenizer(br.readLine());
-
-            for (int i = 0; i < N; i++) {
-                height[i] = Integer.parseInt(st.nextToken());
+            for (int i = 0; i < N; i++){
+                heights[i] = Integer.parseInt(st.nextToken());
             }
 
-            answer = Integer.MAX_VALUE;
-
+            //========================================
+            ANSWER = Integer.MAX_VALUE;
             dfs(0, 0);
 
-            System.out.println("#" + tc + " " + answer);
+            System.out.println("#" + tc + " " + (ANSWER - B));
         }
+
     }
 
-    static void dfs(int depth, int sum) {
-
-        // 이미 선반 높이 이상이면 정답 후보
-        if (sum >= B) {
-            answer = Math.min(answer, sum - B);
+    public static void dfs(int depth, int total){     // depth 번째 heights를 고를 차례, heights[depth-1] 까지의 합
+        if (depth == N){
+            if (total >= B) ANSWER = Math.min(ANSWER, total);
             return;
         }
 
-        // 모든 직원을 확인한 경우
-        if (depth == N) {
-            return;
-        }
+        // depth번째 선택
+        dfs(depth + 1, total + heights[depth]);
 
-        // 현재 직원 선택
-        dfs(depth + 1, sum + height[depth]);
+        // depth 번째 선택 x
+        dfs(depth + 1, total);
 
-        // 현재 직원 선택 X
-        dfs(depth + 1, sum);
     }
+
 }
