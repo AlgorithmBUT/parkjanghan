@@ -1,6 +1,5 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.StreamTokenizer;
 import java.util.*;
 
 class Solution{
@@ -9,6 +8,7 @@ class Solution{
     static int N, MAX;
     static int ANSWER;
     static int[][] map;
+    static boolean[][] visited;
 
     static int[] dy = {0, 1, 0, -1};
     static int[] dx = {1, 0, -1, 0};
@@ -30,9 +30,8 @@ class Solution{
                 }
             }
 
-
-
             ANSWER = 0;
+            visited = new boolean[N][N];
             for (int day = 0; day <= MAX; day++){
                 ANSWER = Math.max(ANSWER, solve(day));
             }
@@ -43,7 +42,9 @@ class Solution{
     public static int solve(int day){
         int count = 0;
 
-        boolean[][] visited = new boolean[N][N];
+        for (int i = 0; i < N; i++){
+            Arrays.fill(visited[i], false);
+        }
         Queue<int[]> queue = new ArrayDeque<>();
 
         for (int i =0; i < N; i++){
