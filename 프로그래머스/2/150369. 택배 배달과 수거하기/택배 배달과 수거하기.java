@@ -5,13 +5,15 @@ class Solution {
         long answer = 0;
         int dIdx = n-1, pIdx = n-1;
         int dCnt = 0, pCnt = 0;
+        
+        // **==** 이거 안 해서 1시간 개고생함 **==** ^^
         while (dIdx >= 0 && deliveries[dIdx] == 0){
                 dIdx--;
-            }
+        }
         
         while (pIdx >= 0 && pickups[pIdx] == 0){
                 pIdx--;
-            }
+        }
         
         while(dIdx >= 0 || pIdx >= 0){
             dCnt = cap; pCnt = cap;
