@@ -1,40 +1,53 @@
 import java.util.*;
 
 class Solution {
+    static int[] parent;
+    static int[] size;
+    
     public int solution(int n, int[][] computers) {
-        int answer = 0;
         
-        // visited 배열 생성
-        boolean[] visited = new boolean[n];
         
-        // stack 생성
-        Deque<Integer> stk = new ArrayDeque<>();
+        // make union
+        parent = new int[n];
+        size = new int[n];
         
-        // for (1 -> n 번 컴퓨터 까지)
         for (int i = 0; i < n; i++){
-            // visited[i] == 0 이면 stack에 넣기 
-            if (!visited[i]) {
-                stk.push(i);
-                visited[i] = true;
-            }
-            else continue;
-            
-            // stack()이 빌 때까지, DFS로 방문 체크
-            while(!stk.isEmpty()){
-                int cur = stk.pop();
-                
-                for (int j = 0; j < n; j++){
-                    if (!visited[j] && computers[cur][j] == 1) {
-                        visited[j] = true;
-                        stk.push(j);
-                    }
-                }
-            }
-            
-            // stack이 0이 되면 answer++
-            answer++;
+            parent[i] = i;
+            size[i] = 1;
         }
         
+        for (int i = 0; i < n; i++){
+            for (int j = i+1 ;j < n; j++){
+                if (computers[i][j] == 1) {
+                    union(i, j);
+                }
+            }
+        }
+        
+        int answer = 0;
+        for (int i = 0; i < n; i++){
+            if (parent[i] == i) answer++;
+        }
         return answer;
+    }
+    
+    public static void union(int a, int b){
+        int rootA = find(a);
+        int rootB = find(b);
+        
+        if (rootA == rootB) return;
+        
+        if (size[rootA] < size[rootB]){
+            parent[rootA] = rootB;
+            size[rootB] += size[rootA];
+        } else {
+            parent[rootB] = rootA;
+            size[rootA] += size[rootB];
+        }
+    }
+    
+    public static int find(int num){
+        if (num == parent[num]) return num;
+        return parent[num] = find(parent[num]);
     }
 }
