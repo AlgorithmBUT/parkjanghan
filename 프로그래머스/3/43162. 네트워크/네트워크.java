@@ -1,42 +1,40 @@
 import java.util.*;
 
 class Solution {
-    static int[] parent;
-    
     public int solution(int n, int[][] computers) {
+        int answer = 0;
         
+        // visited 배열 생성
+        boolean[] visited = new boolean[n];
         
-        // make union
-        parent = new int[n];
+        // stack 생성
+        Deque<Integer> stk = new ArrayDeque<>();
+        
+        // for (1 -> n 번 컴퓨터 까지)
         for (int i = 0; i < n; i++){
-            parent[i] = i;
-        }
-        
-        for (int i = 0; i < n; i++){
-            for (int j = 0 ;j < n; j++){
-                if (computers[i][j] == 1) {
-                    union(i, j);
+            // visited[i] == 0 이면 stack에 넣기 
+            if (!visited[i]) {
+                stk.push(i);
+                visited[i] = true;
+            }
+            else continue;
+            
+            // stack()이 빌 때까지, DFS로 방문 체크
+            while(!stk.isEmpty()){
+                int cur = stk.pop();
+                
+                for (int j = 0; j < n; j++){
+                    if (!visited[j] && computers[cur][j] == 1) {
+                        visited[j] = true;
+                        stk.push(j);
+                    }
                 }
             }
+            
+            // stack이 0이 되면 answer++
+            answer++;
         }
         
-        int answer = 0;
-        for (int i = 0; i < n; i++){
-            if (parent[i] == i) answer++;
-        }
         return answer;
-    }
-    
-    public static void union(int a, int b){
-        int pa = find(a);
-        int pb = find(b);
-        
-        if (pa == pb) return;
-        parent[pb] = pa;
-    }
-    
-    public static int find(int num){
-        if (num == parent[num]) return num;
-        return find(parent[num]);
     }
 }
