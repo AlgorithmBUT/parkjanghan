@@ -31,12 +31,19 @@ class Solution {
             }
             
             // parent에 저장된 내용 카운트
+            
+            
+            // 1번
             // printP();
             int rootA = find(1);
             int sizeA = size[rootA];
             int sizeB = n - sizeA;
+            // answer = Math.min(Math.abs(sizeA- sizeB), answer);
             
-            answer = Math.min(Math.abs(sizeA- sizeB), answer);
+            
+            // 2번
+            answer = Math.min(calc(n), answer);
+            
             
         }
         
@@ -68,7 +75,7 @@ class Solution {
     }
     
     public static int calc(int n){
-        int num1 = parent[1];
+        int num1 = find(1);
         int num2 = -1;
         int num1_count = 0;
         int num2_count = 0;
