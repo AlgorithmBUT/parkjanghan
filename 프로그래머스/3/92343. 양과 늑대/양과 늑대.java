@@ -4,6 +4,7 @@ class Solution {
     static int[] info;
     static int answer;
     static List<Integer>[] graph;
+    static Set<Set<Integer>> visited;
     
     public int solution(int[] info, int[][] edges) {
         answer = 0;
@@ -18,15 +19,19 @@ class Solution {
             graph[e[0]].add(e[1]);
         }
         
+        visited = new HashSet<>();
+        
         List<Integer> candidates = new ArrayList<>();
         candidates.add(0);
 
-        dfs(0, 0, candidates);
+        dfs(0, 0, candidates, new HashSet<>());
         
         return answer;
     }
     
-    public static void dfs(int sheep, int wolf, List<Integer> candidates){
+    public static void dfs(int sheep, int wolf, List<Integer> candidates, Set<Integer> selected){
+        
+        if (!visited.add(new HashSet<>(selected))) return;
         
         answer = Math.max(answer, sheep);
         
@@ -41,7 +46,9 @@ class Solution {
             nextCandidates.remove(Integer.valueOf(candi));
             nextCandidates.addAll(graph[candi]);
             
-            dfs(nextSheep, nextWolf, nextCandidates);
+            Set<Integer> nextSelected = new HashSet<>(selected);
+            nextSelected.add(candi);
+            dfs(nextSheep, nextWolf, nextCandidates, nextSelected);
             
         }
     }
