@@ -13,11 +13,11 @@ class Solution {
         
         long left = 1;
         
-        long minTime = times[0];
+        int minTime = times[0];
         for (int time : times){
             minTime = Math.min(minTime, time);
         }
-        long right = minTime * n;
+        long right = (long) times[0] * n;
 
         long mid;
         
