@@ -1,30 +1,44 @@
 import java.util.*;
 
 class Solution {
+    public static int n;
+    public static long answer;
+    
     public long solution(int n, int[] times) {
-        Arrays.sort(times);
+        this.n = n;
+        this.answer = 1_000_000_000;
+        
+        // 시간 복잡도 계산하기
+        // 10억 바로 포기 -> log(N)
         
         long left = 1;
-        long right = n * (long)times[times.length - 1];
-        long answer = right;
         
-        while (left <= right){
-            long mid = (left + right) / 2;
-            long sum = 0;
+        long minTime = times[0];
+        for (int time : times){
+            minTime = Math.min(minTime, time);
+        }
+        long right = minTime * n;
+
+        long mid;
+        
+        while(left <= right){
+            // 계산하기
+            mid = left + (right - left) / 2;
+            long count = 0;
             
-            for (int t : times){
-                sum += mid / t;
-                if (sum >= n) break;
+            for (int time : times){
+                count += mid/time;
             }
             
-            // System.out.println(sum);
+            // System.out.println("count : " + count + " mid : " + mid);
             
-            if (sum >= n){
+            if (count < n) {
+                left = mid + 1;
+            } else {
                 right = mid - 1;
                 answer = mid;
-            } else {
-                left = mid + 1;
             }
+
         }
         
         return answer;
